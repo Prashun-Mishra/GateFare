@@ -12,6 +12,7 @@ export async function GET(request: Request) {
     }
 
     try {
+        console.log("[Autocomplete] Searching for:", query);
         const response = await amadeus.referenceData.locations.get({
             keyword: query,
             subType: Amadeus.location.any,
@@ -22,8 +23,14 @@ export async function GET(request: Request) {
         return NextResponse.json({ airports });
     } catch (error) {
         console.error("Amadeus Autocomplete Error:", error);
+        const amadeusError = error as any;
+        console.error("Error details:", {
+            description: amadeusError.description,
+            code: amadeusError.code,
+            response: amadeusError.response
+        });
         return NextResponse.json(
-            { error: "Failed to fetch airports", details: error instanceof Error ? error.message : String(error), fullError: JSON.stringify(error) },
+            { error: "Failed to fetch airports", details: error instanceof Error ? error.message : String(error) },
             { status: 500 }
         );
     }

@@ -21,6 +21,7 @@ export async function GET(request: Request) {
     const destinationCode = to.includes('(') ? to.match(/\(([^)]+)\)/)?.[1] || to : to;
 
     try {
+        console.log("[Flight Search] Searching:", { originCode, destinationCode, date, passengers });
         const response = await amadeus.shopping.flightOffersSearch.get({
             originLocationCode: originCode,
             destinationLocationCode: destinationCode,
@@ -33,8 +34,14 @@ export async function GET(request: Request) {
         return NextResponse.json({ flights });
     } catch (error) {
         console.error("Amadeus Flight Search Error:", error);
+        const amadeusError = error as any;
+        console.error("Error details:", {
+            description: amadeusError.description,
+            code: amadeusError.code,
+            response: amadeusError.response
+        });
         return NextResponse.json(
-            { error: "Failed to fetch flights" },
+            { error: "Failed to fetch flights", details: error instanceof Error ? error.message : String(error) },
             { status: 500 }
         );
     }
