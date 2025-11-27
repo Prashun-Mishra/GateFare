@@ -236,7 +236,7 @@ export default function EnquiryPage() {
               {
                 icon: <MapPin className="w-6 h-6" />,
                 title: "Visit Us",
-                content: "123 Travel St, London, UK",
+                content: "30 N Gould St Ste R, Sheridan, WY 82801, USA",
               },
             ].map((info, idx) => (
               <div
