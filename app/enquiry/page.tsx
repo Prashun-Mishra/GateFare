@@ -226,7 +226,7 @@ export default function EnquiryPage() {
               {
                 icon: <Mail className="w-6 h-6" />,
                 title: "Email Us",
-                content: "info@gatefare.com",
+                content: "support@gatefare.com",
               },
               {
                 icon: <Phone className="w-6 h-6" />,
@@ -308,7 +308,7 @@ export default function EnquiryPage() {
               <div className="space-y-3 text-slate-400 text-sm">
                 <div className="flex items-center gap-2">
                   <Mail className="w-4 h-4 text-blue-400" />
-                  <span>info@gatefare.com</span>
+                  <span>support@gatefare.com</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-blue-400" />

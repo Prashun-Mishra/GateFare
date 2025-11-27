@@ -11,31 +11,41 @@ import type { Flight } from "@/lib/mock-data"
 
 interface BookingWizardProps {
     flight: Flight
+    passengerCount?: number
     onClose: () => void
 }
 
-export function BookingWizard({ flight, onClose }: BookingWizardProps) {
+export function BookingWizard({ flight, passengerCount = 1, onClose }: BookingWizardProps) {
     const [step, setStep] = useState(1)
     const [loading, setLoading] = useState(false)
     const [success, setSuccess] = useState(false)
     const [token, setToken] = useState("")
     const [error, setError] = useState("")
 
-    // State for all steps
-    const [passenger, setPassenger] = useState<PassengerDetails>({
-        gender: "male",
-        firstName: "",
-        lastName: "",
-        dobDay: "",
-        dobMonth: "",
-        dobYear: "",
-        passport: "",
-        email: "",
-        phone: "",
-        baggage: "none",
-        ticketExchange: false,
-        smsUpdates: false
-    })
+    // Initialize passengers array
+    const [passengers, setPassengers] = useState<PassengerDetails[]>(
+        Array(passengerCount).fill(null).map(() => ({
+            gender: "male",
+            firstName: "",
+            lastName: "",
+            dobDay: "",
+            dobMonth: "",
+            dobYear: "",
+            passport: "",
+            email: "",
+            countryCode: "+91",
+            phone: "",
+            baggage: "none",
+            ticketExchange: false,
+            smsUpdates: false
+        }))
+    )
+
+    const updatePassenger = (index: number, details: PassengerDetails) => {
+        const newPassengers = [...passengers]
+        newPassengers[index] = details
+        setPassengers(newPassengers)
+    }
 
     const [seats, setSeats] = useState<SeatSelection>({
         seatNumber: null,
@@ -51,22 +61,28 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
 
     // Calculate Total Price
     const calculateTotal = () => {
-        let total = flight.price
-        if (passenger.baggage === "add") total += 50
-        if (passenger.ticketExchange) total += 54
-        if (passenger.smsUpdates) total += 6
-        total += seats.price
-        if (addons.flexibleTicket) total += 45
-        if (addons.cancellation === "any_reason") total += 65
-        if (addons.cancellation === "flexible") total += 37
-        if (addons.premiumService) total += 12
+        let total = flight.price * passengers.length // Base fare for all passengers
+
+        passengers.forEach(p => {
+            if (p.baggage === "add") total += 50
+            if (p.ticketExchange) total += 54
+            if (p.smsUpdates) total += 6
+        })
+
+        total += seats.price // Seat selection is usually per seat, assuming logic handles total seat cost
+        if (addons.flexibleTicket) total += 45 * passengers.length
+        if (addons.cancellation === "any_reason") total += 65 * passengers.length
+        if (addons.cancellation === "flexible") total += 37 * passengers.length
+        if (addons.premiumService) total += 12 * passengers.length
         return total
     }
 
     const handleNext = () => {
         if (step === 1) {
-            if (!passenger.firstName || !passenger.lastName || !passenger.email) {
-                setError("Please fill in all required fields")
+            // Validate all passengers
+            const isValid = passengers.every(p => p.firstName && p.lastName) && passengers[0].email
+            if (!isValid) {
+                setError("Please fill in all required fields for all passengers")
                 return
             }
         }
@@ -96,7 +112,7 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
                         basePrice: flight.price,
                         totalPrice: calculateTotal()
                     },
-                    passenger,
+                    passengers,
                     seats,
                     addons,
                     token
@@ -124,7 +140,7 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
                 </div>
                 <h2 className="text-3xl font-bold text-slate-900 mb-2">Booking Confirmed!</h2>
                 <p className="text-slate-600 mb-8 max-w-md">
-                    Your trip to {flight.arrival.city} is secured. We've sent a confirmation email to {passenger.email}.
+                    Your trip to {flight.arrival.city} is secured. We've sent a confirmation email to {passengers[0].email}.
                 </p>
                 <Button onClick={onClose} className="bg-blue-600 hover:bg-blue-700 min-w-[200px]">
                     Done
@@ -159,8 +175,8 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
                     className="flex-1 overflow-y-auto overscroll-contain px-1 -mx-1 py-1"
                     data-lenis-prevent="true"
                 >
-                    {step === 1 && <StepPassenger details={passenger} onChange={setPassenger} />}
-                    {step === 2 && <StepSeats selection={seats} onChange={setSeats} flight={flight} passengerName={`${passenger.firstName} ${passenger.lastName}`} />}
+                    {step === 1 && <StepPassenger passengers={passengers} onChange={updatePassenger} />}
+                    {step === 2 && <StepSeats selection={seats} onChange={setSeats} flight={flight} passengerName={`${passengers[0].firstName} ${passengers[0].lastName}`} />}
                     {step === 3 && <StepAddons selection={addons} onChange={setAddons} />}
 
                     {step === 4 && (
@@ -207,24 +223,16 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
                                         Traveler Details
                                     </h4>
                                     <div className="space-y-3 text-sm">
-                                        <div>
-                                            <span className="text-slate-500 text-xs block">Full Name</span>
-                                            <span className="font-medium text-slate-900">{passenger.firstName} {passenger.lastName}</span>
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <div>
-                                                <span className="text-slate-500 text-xs block">Gender</span>
-                                                <span className="font-medium text-slate-900 capitalize">{passenger.gender}</span>
+                                        {passengers.map((p, i) => (
+                                            <div key={i} className="border-b pb-2 last:border-0 last:pb-0">
+                                                <div className="font-medium text-slate-900">Passenger {i + 1}</div>
+                                                <div className="text-slate-600">{p.firstName} {p.lastName}</div>
                                             </div>
-                                            <div>
-                                                <span className="text-slate-500 text-xs block">Date of Birth</span>
-                                                <span className="font-medium text-slate-900">{passenger.dobDay}/{passenger.dobMonth}/{passenger.dobYear}</span>
-                                            </div>
-                                        </div>
+                                        ))}
                                         <div>
                                             <span className="text-slate-500 text-xs block">Contact Info</span>
-                                            <div className="font-medium text-slate-900 truncate">{passenger.email}</div>
-                                            <div className="font-medium text-slate-900">{passenger.phone}</div>
+                                            <div className="font-medium text-slate-900 truncate">{passengers[0].email}</div>
+                                            <div className="font-medium text-slate-900">{passengers[0].phone}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -243,7 +251,7 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
                                         <div className="flex justify-between items-center border-b border-dashed pb-2">
                                             <span className="text-slate-600">Baggage</span>
                                             <span className="font-medium text-slate-900 text-right">
-                                                {passenger.baggage === "add" ? "Checked (+23kg)" : "Carry-on Only"}
+                                                {passengers.filter(p => p.baggage === "add").length} Checked (+23kg)
                                             </span>
                                         </div>
                                         <div className="flex justify-between items-center border-b border-dashed pb-2">
@@ -365,7 +373,7 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
                             </div>
                             <div>
                                 <div className="font-medium text-sm text-slate-900">
-                                    {passenger.firstName && passenger.lastName ? `${passenger.firstName} ${passenger.lastName}` : "Passenger 1"}
+                                    {passengers.length} Passenger{passengers.length > 1 ? 's' : ''}
                                 </div>
                                 <div className="text-xs text-slate-500">Adult</div>
                             </div>
@@ -376,25 +384,25 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
                         <h3 className="font-bold text-slate-900 mb-3">Price Details</h3>
                         <div className="space-y-2 text-sm">
                             <div className="flex justify-between text-slate-600">
-                                <span>Base Fare</span>
-                                <span>${flight.price}</span>
+                                <span>Base Fare x {passengers.length}</span>
+                                <span>${flight.price * passengers.length}</span>
                             </div>
-                            {passenger.baggage === "add" && (
+                            {passengers.some(p => p.baggage === "add") && (
                                 <div className="flex justify-between text-slate-600">
                                     <span>Baggage</span>
-                                    <span>+$50</span>
+                                    <span>+${passengers.filter(p => p.baggage === "add").length * 50}</span>
                                 </div>
                             )}
-                            {passenger.ticketExchange && (
+                            {passengers.some(p => p.ticketExchange) && (
                                 <div className="flex justify-between text-slate-600">
                                     <span>Ticket Exchange</span>
-                                    <span>+$54</span>
+                                    <span>+${passengers.filter(p => p.ticketExchange).length * 54}</span>
                                 </div>
                             )}
-                            {passenger.smsUpdates && (
+                            {passengers.some(p => p.smsUpdates) && (
                                 <div className="flex justify-between text-slate-600">
                                     <span>SMS Updates</span>
-                                    <span>+$6</span>
+                                    <span>+${passengers.filter(p => p.smsUpdates).length * 6}</span>
                                 </div>
                             )}
                             {seats.price > 0 && (
@@ -406,19 +414,19 @@ export function BookingWizard({ flight, onClose }: BookingWizardProps) {
                             {addons.flexibleTicket && (
                                 <div className="flex justify-between text-slate-600">
                                     <span>Flexible Ticket</span>
-                                    <span>+$45</span>
+                                    <span>+${45 * passengers.length}</span>
                                 </div>
                             )}
                             {addons.cancellation !== "none" && (
                                 <div className="flex justify-between text-slate-600">
                                     <span>Cancellation</span>
-                                    <span>+${addons.cancellation === "any_reason" ? 65 : 37}</span>
+                                    <span>+${(addons.cancellation === "any_reason" ? 65 : 37) * passengers.length}</span>
                                 </div>
                             )}
                             {addons.premiumService && (
                                 <div className="flex justify-between text-slate-600">
                                     <span>Premium Service</span>
-                                    <span>+$12</span>
+                                    <span>+${12 * passengers.length}</span>
                                 </div>
                             )}
                             <div className="border-t pt-2 mt-2 flex justify-between font-bold text-lg text-slate-900">

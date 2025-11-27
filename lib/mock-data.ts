@@ -18,6 +18,8 @@ export interface Flight {
     price: number
     currency: string
     stops: number
+    seatsAvailable: number
+    rawOffer?: any
 }
 
 export interface Airport {
@@ -97,9 +99,12 @@ export async function searchFlights(from: string, to: string, date: string): Pro
             duration: `${durationHours}h 00m`,
             price: Math.floor(priceBase),
             currency: "USD",
-            stops: stops
+            stops: stops,
+            seatsAvailable: Math.floor(Math.random() * 9) + 1 // 1-9 seats
         }
     })
 
     return flights
 }
+
+

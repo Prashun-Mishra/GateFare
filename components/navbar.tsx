@@ -25,10 +25,9 @@ export function Navbar() {
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-blue-100">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <Link href="/" className="text-2xl font-bold text-blue-600 flex items-center gap-2">
-                    <Plane className="w-6 h-6" />
-                    Gatefare
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                <Link href="/" className="flex items-center">
+                    <img src="/logo.png" alt="Gatefare" className="h-24 w-auto" />
                 </Link>
 
                 {/* Desktop Menu */}
@@ -59,9 +58,8 @@ export function Navbar() {
                         </SheetTrigger>
                         <SheetContent side="right" className="w-[300px] sm:w-[400px]">
                             <div className="flex flex-col gap-8 py-8">
-                                <div className="flex items-center gap-2 text-2xl font-bold text-blue-600">
-                                    <Plane className="w-6 h-6" />
-                                    Gatefare
+                                <div className="flex items-center">
+                                    <img src="/logo.png" alt="Gatefare" className="h-24 w-auto" />
                                 </div>
                                 <div className="flex flex-col gap-4">
                                     {links.map((link) => (

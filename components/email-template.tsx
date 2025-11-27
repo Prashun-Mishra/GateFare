@@ -46,7 +46,7 @@ export const EnquiryEmail: React.FC<Readonly<EmailTemplateProps>> = ({
     addons
 }) => (
     <div style={{ fontFamily: 'sans-serif', padding: '20px', color: '#333' }}>
-        <h2 style={{ color: '#059669' }}>
+        <h2 style={{ color: '#2563eb' }}>
             {type === "booking" ? "New Flight Booking Request" : "New Flight Enquiry"}
         </h2>
 
@@ -68,15 +68,15 @@ export const EnquiryEmail: React.FC<Readonly<EmailTemplateProps>> = ({
         </div>
 
         {type === "booking" && passenger && (
-            <div style={{ background: '#f0fdf4', padding: '15px', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
-                <h3 style={{ marginTop: 0, color: '#166534' }}>Booking Details</h3>
+            <div style={{ background: '#eff6ff', padding: '15px', borderRadius: '8px', border: '1px solid #bfdbfe' }}>
+                <h3 style={{ marginTop: 0, color: '#1e40af' }}>Booking Details</h3>
 
                 <p><strong>Passenger:</strong> {passenger.firstName} {passenger.lastName} ({passenger.gender})</p>
                 <p><strong>Date of Birth:</strong> {passenger.dobDay} {passenger.dobMonth} {passenger.dobYear}</p>
                 <p><strong>Passport:</strong> {passenger.passport || "Not provided"}</p>
                 <p><strong>Baggage:</strong> {passenger.baggage === "add" ? "Checked Bag (+23kg)" : "Carry-on Only"}</p>
 
-                <hr style={{ borderColor: '#bbf7d0', margin: '10px 0' }} />
+                <hr style={{ borderColor: '#bfdbfe', margin: '10px 0' }} />
 
                 <p><strong>Seat Selection:</strong> {seats?.seatNumber || "Random"} ({seats?.price ? `$${seats.price}` : "Free"})</p>
 

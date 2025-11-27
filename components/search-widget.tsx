@@ -124,9 +124,9 @@ export function SearchWidget() {
                                 <CommandList>
                                     <CommandEmpty>{loading ? "Searching..." : "No airport found."}</CommandEmpty>
                                     <CommandGroup>
-                                        {airports.map((airport) => (
+                                        {airports.map((airport, index) => (
                                             <CommandItem
-                                                key={airport.code}
+                                                key={`${airport.code}-${index}`}
                                                 value={airport.code}
                                                 onSelect={() => {
                                                     setSearchData({ ...searchData, from: `${airport.city} (${airport.code})` })
@@ -191,9 +191,9 @@ export function SearchWidget() {
                                 <CommandList>
                                     <CommandEmpty>{loading ? "Searching..." : "No airport found."}</CommandEmpty>
                                     <CommandGroup>
-                                        {airports.map((airport) => (
+                                        {airports.map((airport, index) => (
                                             <CommandItem
-                                                key={airport.code}
+                                                key={`${airport.code}-${index}`}
                                                 value={airport.code}
                                                 onSelect={() => {
                                                     setSearchData({ ...searchData, to: `${airport.city} (${airport.code})` })

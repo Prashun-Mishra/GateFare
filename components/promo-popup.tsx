@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import Image from "next/image"
@@ -59,6 +59,9 @@ export function PromoPopup() {
                                 <DialogTitle className="text-3xl font-bold text-slate-900 mb-2">
                                     Upgrade Your Journey
                                 </DialogTitle>
+                                <DialogDescription className="sr-only">
+                                    Unlock exclusive premium benefits for your next flight including lounge access, priority boarding, and extra baggage.
+                                </DialogDescription>
                             </DialogHeader>
 
                             <p className="text-slate-600 mb-6 text-lg">

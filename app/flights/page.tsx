@@ -30,6 +30,7 @@ function FlightResultsContent() {
     const from = searchParams.get("from")
     const to = searchParams.get("to")
     const date = searchParams.get("date")
+    const passengers = parseInt(searchParams.get("passengers") || "1")
 
     useEffect(() => {
         const fetchFlights = async () => {
@@ -39,6 +40,7 @@ function FlightResultsContent() {
                     from: from || "",
                     to: to || "",
                     date: date || "",
+                    passengers: passengers.toString(),
                 }).toString()
 
                 const res = await fetch(`/api/flights/search?${query}`)
@@ -65,7 +67,7 @@ function FlightResultsContent() {
         } else {
             setLoading(false)
         }
-    }, [from, to, date])
+    }, [from, to, date, passengers])
 
     // Derived Data for Filters
     const { minPrice, maxPrice, uniqueAirlines } = useMemo(() => {
@@ -88,15 +90,6 @@ function FlightResultsContent() {
             // Airline Filter
             if (filters.airlines.length > 0 && !filters.airlines.includes(flight.airline)) return false
 
-            // Stops Filter (Mock logic as mock data doesn't have stops property consistent with filter yet, 
-            // assuming direct for now or parsing duration/stops if available. 
-            // The mock data has 'duration' string. Let's assume all are direct for simplicity or add mock stops)
-            // Actually mock data doesn't have 'stops' field in Flight interface in previous view, 
-            // let's check mock-data.ts again. 
-            // Wait, Flight interface in mock-data.ts:
-            // export interface Flight { ... duration: string; price: number ... }
-            // It DOES NOT have stops. I should probably add it or ignore it.
-            // Let's ignore stops filter for now or assume random stops for demo.
             return true
         })
 
@@ -127,14 +120,14 @@ function FlightResultsContent() {
             <div className="bg-white border-b border-blue-100 sticky top-0 z-10 shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-4">
-                        <Button variant="ghost" size="icon" onClick={() => router.back()}>
+                        <Button variant="ghost" size="icon" onClick={() => router.push('/')}>
                             <ArrowLeft className="w-5 h-5" />
                         </Button>
                         <div>
                             <h1 className="text-lg font-bold text-slate-900">
                                 {from} to {to}
                             </h1>
-                            <p className="text-sm text-slate-500">{date} • 1 Passenger</p>
+                            <p className="text-sm text-slate-500">{date} • {passengers} Passenger{passengers > 1 ? 's' : ''}</p>
                         </div>
                     </div>
 
@@ -220,6 +213,7 @@ function FlightResultsContent() {
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
                 flight={selectedFlight}
+                passengerCount={passengers}
             />
         </div>
     )

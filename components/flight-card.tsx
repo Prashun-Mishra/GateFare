@@ -55,6 +55,11 @@ export function FlightCard({ flight, onBook }: FlightCardProps) {
                         <div className="text-2xl font-bold text-blue-600">
                             ${flight.price.toLocaleString()}
                         </div>
+                        {flight.seatsAvailable && (
+                            <div className={`text-xs font-medium ${flight.seatsAvailable < 9 ? 'text-red-500' : 'text-blue-600'}`}>
+                                {flight.seatsAvailable} seat{flight.seatsAvailable !== 1 ? 's' : ''} left
+                            </div>
+                        )}
                     </div>
                     <Button
                         onClick={() => onBook(flight)}

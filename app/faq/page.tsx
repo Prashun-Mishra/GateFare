@@ -48,7 +48,7 @@ export default function FAQPage() {
             items: [
                 {
                     question: "How can I contact customer support?",
-                    answer: "Our support team is available 24/7. You can reach us via email at info@gatefare.com, call us at +1 (555) 123-4567, or use the contact form on our website.",
+                    answer: "Our support team is available 24/7. You can reach us via email at support@gatefare.com, call us at +1 (555) 123-4567, or use the contact form on our website.",
                 },
                 {
                     question: "Do you offer travel insurance?",
@@ -139,7 +139,7 @@ export default function FAQPage() {
                             <div className="space-y-3 text-slate-400 text-sm">
                                 <div className="flex items-center gap-2">
                                     <Mail className="w-4 h-4 text-blue-400" />
-                                    <span>info@gatefare.com</span>
+                                    <span>support@gatefare.com</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Phone className="w-4 h-4 text-blue-400" />

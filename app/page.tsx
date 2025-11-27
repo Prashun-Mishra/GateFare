@@ -14,6 +14,7 @@ import { SearchWidget } from "@/components/search-widget"
 import { ConcentricCircles } from "@/components/concentric-circles"
 import { Navbar } from "@/components/navbar";
 import { PromoPopup } from "@/components/promo-popup";
+import { Footer } from "@/components/footer";
 
 import { PackagesCarousel } from "@/components/packages-carousel";
 
@@ -87,7 +88,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section with Concentric Circle Animation */}
-      < section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-8" >
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-8">
         <ConcentricCircles />
 
 
@@ -99,14 +100,14 @@ export default function Home() {
           <h1 className="text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 mb-5 sm:mb-6 leading-tight">
             Your Gateway to <span className="text-blue-600">Premium Travel</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-8 sm:mb-10 md:mb-12 max-w-2xl mx-auto font-light">
+          <p className="text-base sm:text-lg md:text-xl text-slate-600 mb-4 sm:mb-6 md:mb-8 max-w-2xl mx-auto font-light">
             Discover and book luxury flights with personalized service. Your journey to the world starts here.
           </p>
 
           {/* Search Widget */}
           <SearchWidget />
         </div>
-      </section >
+      </section>
 
       {/* Destinations Gallery */}
       {/* Destinations Gallery */}
@@ -172,7 +173,7 @@ export default function Home() {
       </section>
 
       {/* Flight Results */}
-      < section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50" >
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold text-slate-900 mb-12">Available Flights</h2>
           <div className="space-y-4">
@@ -214,13 +215,13 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* Packages Carousel */}
       <PackagesCarousel />
 
       {/* Features Section */}
-      < section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50" >
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-white to-slate-50">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -254,89 +255,14 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
 
 
-      {/* Footer */}
-      < footer className="bg-slate-900 text-white py-16 px-4 sm:px-6 lg:px-8" >
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div>
-              <h3 className="text-2xl font-bold text-blue-400 mb-4">Gatefare</h3>
-              <p className="text-slate-400 text-sm">Your premium gateway to world-class travel experiences</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-4">Navigation</h4>
-              <ul className="space-y-2 text-slate-400 text-sm">
-                <li>
-                  <Link href="/" className="hover:text-blue-400 transition-colors">
-                    Flights
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/enquiry" className="hover:text-blue-400 transition-colors">
-                    Enquiry
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="hover:text-blue-400 transition-colors">
-                    About
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-4">Support</h4>
-              <ul className="space-y-2 text-slate-400 text-sm">
-                <li>
-                  <a href="#" className="hover:text-blue-400 transition-colors">
-                    Help Center
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-400 transition-colors">
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-blue-400 transition-colors">
-                    FAQ
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold text-white mb-4">Contact</h4>
-              <div className="space-y-3 text-slate-400 text-sm">
-                <div className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-blue-400" />
-                  <span>info@gatefare.com</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-blue-400" />
-                  <span>+1 (555) 123-4567</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-slate-800 pt-8">
-            <p className="text-center text-slate-400 text-sm">
-              © 2025 Gatefare. All rights reserved. |
-              <a href="#" className="hover:text-blue-400 ml-2">
-                Privacy Policy
-              </a>{" "}
-              |
-              <a href="#" className="hover:text-blue-400 ml-2">
-                Terms of Service
-              </a>
-            </p>
-          </div>
-        </div>
-      </footer >
+      <Footer />
 
       {/* Inquiry Dialog */}
-      < Dialog open={showInquiry} onOpenChange={setShowInquiry} >
+      <Dialog open={showInquiry} onOpenChange={setShowInquiry}>
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>Flight Inquiry</DialogTitle>
@@ -374,7 +300,7 @@ export default function Home() {
             </Button>
           </div>
         </DialogContent>
-      </Dialog >
+      </Dialog>
       <PromoPopup />
     </div>
   )
